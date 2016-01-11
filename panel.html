@@ -18,7 +18,12 @@
             <div id='error-box'>
                 <div class='alert alert-danger'><p><span class="fui-cross"></span> <strong>Error!</strong> <span class='error-message'></span></p></div>
             </div>
-            <button id='create' class='btn btn-primary'><span class='fui-gear'></span> Create a snippet from inspected element</button>
+            <form id='xpath-form'>
+                <div class="form-group">
+                    <label for='element-xpath'>Type in an XPath for fast lookup and press Enter: </label>
+                    <input type='text' class='form-control input-sm' id='element-xpath' />
+                </div>
+            </form>
         </div>
     </div>
 

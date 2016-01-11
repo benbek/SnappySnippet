@@ -1,3 +1,7 @@
+body {
+	border-bottom: dashed 1px dimgray;
+}
+
 .container {
 	margin-top: 10px;
 }

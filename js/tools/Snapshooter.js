@@ -217,7 +217,7 @@ function Snapshooter(root) {
 		descendants = root.getElementsByTagName('*');
 
 		parent = root.parentElement;
-		while (parent && parent !== document.body) {
+		while (parent && parent !== root.ownerDocument.body) {
 			reverseAncestors.push(parent);
 			parent = parent.parentElement;
 		}
