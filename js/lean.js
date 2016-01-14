@@ -840,6 +840,7 @@
 
 		// constants
 			ATTRIBUTE_ENCLOSING_CHARACTERS = ['"', "'"],
+			ESCAPING_CHARACTER = '\\',
 			ID_ATTRIBUTE = "id=",
 			STYLE_ATTRIBUTE = "style=";
 
@@ -900,15 +901,20 @@
 		/**
 		 * Converts SnappySnippet's CSS object into a string of CSS properties.
 		 * @param properties The CSS object to extort.
+		 * @param attributeEnclosingChar The string/character that encloses values.
 		 * @returns {string} CSS properties contained in the given object.
 		 */
-		function propertiesToString(properties) {
+		function propertiesToString(properties, attributeEnclosingChar) {
 			var propertyName,
 				output = "";
 
 			for (propertyName in properties) {
 				if (properties.hasOwnProperty(propertyName)) {
-					output += propertyName + ": " + properties[propertyName] + "; ";
+					// Treat those special url() functionals, that sometimes have quotation marks although they are not required
+					var propertyValue =
+						properties[propertyName].replace(/url\("(.*)"\)/g, "url($1)").replace(/url\('(.*)'\)/g, "url($1)")
+							.replace(attributeEnclosingChar, ESCAPING_CHARACTER + attributeEnclosingChar);
+					output += propertyName + ": " + propertyValue + "; ";
 				}
 			}
 
@@ -930,7 +936,7 @@
 			}
 			return html.substring(0, cursor) + // The head of the string
 				STYLE_ATTRIBUTE + attributeEnclosingChar + // The attribute key
-				propertiesToString(stylesMap[styleId].node) + // The attribute value
+				propertiesToString(stylesMap[styleId].node, attributeEnclosingChar) + // The attribute value
 				attributeEnclosingChar + " " + // Closing the value just before the next attribute
 				html.substring(cursor); // The tail of the string
 		}
